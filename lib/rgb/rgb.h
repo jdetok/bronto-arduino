@@ -1,6 +1,20 @@
 #ifndef RGB_H
 #define RGB_H
 
-// class to control the RGB eyeball
+class RGB {
+    private: 
+        int rPin;
+        int gPin;
+        int bPin;
+        int rgbPins[3] = {rPin, gPin, bPin};
+    public:
+        RGB(int rPin, int gPin, int bPin);
+        void init();
+        void off();
+        void red();
+        void grn();
+        void blu();
+        void on(int rVal, int gVal, int bVal);
+};
 
 #endif
