@@ -11,7 +11,7 @@ class ShfitReg {
         ShfitReg(int serPin, int oePin, int latchPin, int clkPin);
         void init();
         void off();
-        void on();
+        void on(int pwrState, int brtState, int brtMdState);
 };
 
 #endif

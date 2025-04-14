@@ -26,6 +26,10 @@ int Pot::getInt() {
     return (analogRead(pin) / 4);
 }
 
+int Pot::getBrt() {
+    return ((analogRead(pin) / 4) - 255);
+}
+
 int Pot::getSpd() {
     return analogRead(pin); // should return 0 - 1123
 }

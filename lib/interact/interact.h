@@ -20,6 +20,7 @@
         Pot(int pin);
         int getInt();
         int getSpd();
+        int getBrt();
  };
 
 

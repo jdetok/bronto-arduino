@@ -11,8 +11,8 @@
 
 // construct switch object(s)
 SlideSwitch pwrSw(2); // D2 - main power switch
-SlideSwitch rgbPwrSw(3); // D3 - rgb power switch
-SlideSwitch rgbModeSw(5); // D5 - rgb mode switch (swtiches between rgb sequence and pot color control)
+SlideSwitch brtSw(3); // D3 - rgb power switch
+SlideSwitch brtMdSw(5); // D5 - rgb mode switch (swtiches between rgb sequence and pot color control)
 
 // construct potentiometer object(s)
 Pot spdPot(A0); // LED sequence speed
@@ -37,10 +37,11 @@ void setup() {
 void loop() {
 
   Serial.println("loop");
-  Serial.println(pwrSw.getState());
+  Serial.println(brtSw.getState());
   //digitalWrite(shiftReg.oePin, !pwrSw.getState());
-  analogWrite(shiftReg.oePin, brtPot.getInt());
+  //analogWrite(shiftReg.oePin, brtPot.getInt());
   //ledSeq.runSeq(pwrSw.getState(), spdPot.getSpd());  
-  rgbEye.on(rPot.getInt(), gPot.getInt(), bPot.getInt());
-  //delay(1);
+  //rgbEye.on(rPot.getInt(), gPot.getInt(), bPot.getInt());
+  shiftReg.on(pwrSw.getState(), brtSw.getState(), brtMdSw.getState());
+  delay(1);
 }
