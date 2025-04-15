@@ -14,7 +14,8 @@ class RGB {
         void red();
         void grn();
         void blu();
-        void on(int rVal, int gVal, int bVal);
+        void on(int pwrState, int rgbPwrState, int brtState, int brtMdState, int rVal, int gVal, int bVal);
+        void onSw(int rState, int gState, int bState, int brt);
 };
 
 #endif
