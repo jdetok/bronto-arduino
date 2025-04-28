@@ -6,7 +6,6 @@
 #include <Arduino.h> // Arduino framework
 #include "interact.h" // controls switches and pots
 #include "shiftreg.h"
-#include "sequence.h" // controls led sequences
 #include "rgb.h" // controls RGB LED
 
 // construct switch object(s)
@@ -30,8 +29,6 @@ ShfitReg shiftReg(4, 6, 7, 8); // D4-serPin, D6-oePin, D7-latchPin, D8-clkPin
 // construct RGB object(s)
 RGB rgbEye(9, 10, 11);
 
-Sequence ledSeq(shiftReg.serPin, shiftReg.oePin, shiftReg.latchPin, shiftReg.clkPin, 8);
-
 void setup() {
   Serial.begin(9600);
   Serial.println("setup");
@@ -40,12 +37,14 @@ void setup() {
 void loop() {
 
   //Serial.println("loop");
-  Serial.println(gSw.getState());
+  //Serial.println(gSw.getState());
   //digitalWrite(shiftReg.oePin, !pwrSw.getState());
   //analogWrite(shiftReg.oePin, brtPot.getInt());
   //ledSeq.runSeq(pwrSw.getState(), spdPot.getSpd());  
   rgbEye.on(pwrSw.getState(), rgbPwrSw.getState(), brtSw.getState(), brtMdSw.getState(), rPot.getInt(), gPot.getInt(), bPot.getInt());
   //rgbEye.onSw(rSw.getState(), gSw.getState(), bSw.getState(), 100);
   shiftReg.on(pwrSw.getState(), brtSw.getState(), brtMdSw.getState());
+  //shiftReg.seq(pwrSw.getState(), brtSw.getState(), brtMdSw.getState());
+  
   delay(1);
 }
