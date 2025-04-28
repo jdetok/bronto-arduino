@@ -11,7 +11,6 @@ RGB::RGB(int rPin, int gPin, int bPin) {
 void RGB::init() {
     for (int pin : rgbPins) {
         pinMode(pin, OUTPUT);
-        //digitalWrite(pin, LOW);
     }
 }
 
@@ -39,32 +38,37 @@ void RGB::blu() {
     analogWrite(bPin, 255);
 }
 
+int RGB::setBrtDiv(int brtState, int brtMdState) {
+    int dv = 0;
+    if (brtState == 1) {
+        if (brtMdState == 1) {
+            dv = 1; 
+        } else {
+            dv = 2;
+        }
+    } else {
+        if (brtMdState == 1) {
+            dv = 4;
+        } else {
+            dv = 8;
+        }
+    }
+    return dv;
+}
+
 // pass three values 0-255 to turn on RGB
 void RGB::on(int pwrState, int rgbPwrState, int brtState, int brtMdState,  int rVal, int gVal, int bVal) {
     int dv = 0;
     if (pwrState == 1) {
-        if (brtState == 1) {
-            if (brtMdState == 1) {
-                dv = 1; 
-            } else {
-                dv = 2;
-            }
-        } else {
-            if (brtMdState == 1) {
-                dv = 4;
-            } else {
-                dv = 8;
-            }
-        } 
         // divide respective pot value by appropriate divider dv value
+        dv = setBrtDiv(brtState, brtMdState);
         analogWrite(rPin, (rVal / dv));
         analogWrite(gPin, (gVal / dv));
         analogWrite(bPin, (bVal / dv));
         } else {
-            digitalWrite(rPin, LOW);
-            digitalWrite(gPin, LOW);
-            digitalWrite(bPin, LOW);
-        //off();
+        digitalWrite(rPin, LOW);
+        digitalWrite(gPin, LOW);
+        digitalWrite(bPin, LOW);
     }
 }
 
