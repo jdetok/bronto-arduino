@@ -36,13 +36,8 @@ void setup() {
 
 void loop() {
 
-  //Serial.println("loop");
-  //Serial.println(gSw.getState());
-  //digitalWrite(shiftReg.oePin, !pwrSw.getState());
-  //analogWrite(shiftReg.oePin, brtPot.getInt());
-  //ledSeq.runSeq(pwrSw.getState(), spdPot.getSpd());  
   rgbEye.on(pwrSw.getState(), rgbPwrSw.getState(), brtSw.getState(), brtMdSw.getState(), rPot.getInt(), gPot.getInt(), bPot.getInt());
-  //rgbEye.onSw(rSw.getState(), gSw.getState(), bSw.getState(), 100);
+  
   shiftReg.on(pwrSw.getState(), brtSw.getState(), brtMdSw.getState());
   //shiftReg.seq(pwrSw.getState(), brtSw.getState(), brtMdSw.getState());
   
