@@ -64,18 +64,17 @@ void ShfitReg::on(int pwrState, int brtState, int brtMdState) {
     digitalWrite(latchPin, HIGH);
 }
 
-void ShfitReg::seq(int pwrState, int brtState, int brtMdState) {
+void ShfitReg::seq(int pwrState, int brtState, int brtMdState, int spd) {
     int repeats = 8;
     int n = 1;
-
     for (int i = 0; i < repeats; i++) {
-        analogWrite(oePin, LOW);
+        analogWrite(oePin, getBrtState(pwrState, brtState, brtMdState));
         digitalWrite(latchPin, LOW);
         shiftOut(serPin, clkPin, MSBFIRST, n);
         digitalWrite(latchPin, HIGH);
         
         n = n * 2;
         Serial.println(n);
-        delay(150);
+        delay(spd);
     }
 }

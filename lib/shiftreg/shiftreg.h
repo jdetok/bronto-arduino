@@ -13,7 +13,7 @@ class ShfitReg {
         int getBrtState(int pwrState, int brtState, int brtMdState);
         void off();
         void on(int pwrState, int brtState, int brtMdState);
-        void seq(int pwrState, int brtState, int brtMdState);
+        void seq(int pwrState, int brtState, int brtMdState, int spd);
 };
 
 #endif

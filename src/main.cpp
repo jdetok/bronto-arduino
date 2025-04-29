@@ -39,7 +39,7 @@ void loop() {
   rgbEye.on(pwrSw.getState(), rgbPwrSw.getState(), brtSw.getState(), brtMdSw.getState(), rPot.getInt(), gPot.getInt(), bPot.getInt());
   
   shiftReg.on(pwrSw.getState(), brtSw.getState(), brtMdSw.getState());
-  //shiftReg.seq(pwrSw.getState(), brtSw.getState(), brtMdSw.getState());
+  //shiftReg.seq(pwrSw.getState(), brtSw.getState(), brtMdSw.getState(), spdPot.getSpd());
   
   delay(1);
 }
