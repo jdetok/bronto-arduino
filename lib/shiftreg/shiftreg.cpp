@@ -102,6 +102,7 @@ void ShfitReg::chase(int num_sr, int dt) {
             // run latch high to write all bits (48 in this case) to output at once 
             digitalWrite(latchPin, HIGH);
             delay(dt);
+            dt = dt / 1.05;
         }
     }
 
