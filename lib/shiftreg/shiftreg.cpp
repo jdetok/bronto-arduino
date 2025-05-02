@@ -67,8 +67,8 @@ void ShfitReg::chase(int num_sr, int dt) {
     int num_led = 8;
 
     // set OE low to enable output
-    digitalWrite(oePin, LOW);
-
+    //digitalWrite(oePin, LOW);
+    analogWrite(oePin, 210);
      // outer loop - one run per shift register
     for (int sr = 0; sr < num_sr; sr++) {
         // inner loop - one run per LED

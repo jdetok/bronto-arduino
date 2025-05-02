@@ -8,7 +8,7 @@ SlideSwitch::SlideSwitch(int pin) {
 }
 
 void SlideSwitch::init() {
-    pinMode(pin, INPUT_PULLUP);
+    pinMode(pin, INPUT);
 }
 
 bool SlideSwitch::getState() {

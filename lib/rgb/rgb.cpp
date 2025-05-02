@@ -57,7 +57,7 @@ int RGB::setBrtDiv(int brtState, int brtMdState) {
 }
 
 // pass three values 0-255 to turn on RGB
-void RGB::on(int pwrState, int rgbPwrState, int brtState, int brtMdState,  int rVal, int gVal, int bVal) {
+void RGB::on(int pwrState, int brtState, int brtMdState,  int rVal, int gVal, int bVal) {
     int dv = 0;
     if (pwrState == 1) {
         // divide respective pot value by appropriate divider dv value
