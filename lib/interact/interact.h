@@ -4,19 +4,21 @@
 // define functions for interacting with switches/pots
 
  class SlideSwitch {
-    private:
-        int pin;
+//    private:
+        
 
     public:
+        int pin;
         SlideSwitch(int pin);
         void init();
         bool getState();
  };
 
  class Pot {
-    private:
-        int pin;
+    //private:
+        
     public:
+        int pin;    
         Pot(int pin);
         int getInt();
         int getSpd();

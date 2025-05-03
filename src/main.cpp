@@ -7,16 +7,17 @@
 #include "interact.h" // controls switches and pots
 #include "shiftreg.h"
 #include "rgb.h" // controls RGB LED
+#include "states.h"
 
 // construct switch object(s)
-SlideSwitch pwrSw(5); // D2 - main power switch
-SlideSwitch brtSw(3); // D3 - rgb power switch
-SlideSwitch brtMdSw(2); // D5 - rgb mode switch (swtiches between rgb sequence and pot color control)
+SlideSwitch pwrSw(5); // power
+SlideSwitch brtSw(3); // brightness
+SlideSwitch brtMdSw(2); // intensity
 
 // only A0 - A5 can be used as digital sadly
 // maybe run a jumper from A6-A5 and A7-A1
-SlideSwitch pSw(A6);
-SlideSwitch sSw(A7);
+SlideSwitch pSw(A5); // pattern - change from A6 to A5
+SlideSwitch sSw(A0); // sequence/solid - A7 to A0
 
 // construct potentiometer object(s)
 Pot spdPot(A1); // LED sequence speed
@@ -36,15 +37,16 @@ void setup() {
 }
 
 void loop() {
-
-  rgbEye.on(pwrSw.getState(), brtSw.getState(), brtMdSw.getState(), 
-            rPot.getInt(), gPot.getInt(), bPot.getInt());
-
-  Serial.println(sSw.getState());
+  Serial.println(state(pSw.pin));
+  //Serial.println(pSw.getState());
+  rgbEye.off();
   // using intensity (brt mode) switch until figuring out sSw and pSw not working digital
-  if (brtMdSw.getState() == 0) {
+  if (sSw.getState() == 0) {
+    rgbEye.on(pwrSw.getState(), brtSw.getState(), brtMdSw.getState(), 
+    rPot.getInt(), gPot.getInt(), bPot.getInt());
     shiftReg.on(pwrSw.getState(), brtSw.getState(), brtMdSw.getState());
   } else {
-    shiftReg.chase(6, 200);
+    // shiftReg.chase(6, spdPot.getSpd(), pSw.getState());
+    shiftReg.chase(6, spdPot.getSpd(), pwrSw.pin, sSw.pin, pSw.pin, brtSw.pin, brtMdSw.pin);
   }
 }

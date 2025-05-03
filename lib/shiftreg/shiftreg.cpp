@@ -1,6 +1,7 @@
 #include <Arduino.h>
 #include "shiftreg.h"
 #include "interact.h"
+#include "states.h"
 
 ShfitReg::ShfitReg(int serPin, int oePin, int latchPin, int clkPin) {
     this->serPin = serPin;
@@ -56,7 +57,8 @@ void ShfitReg::on(int pwrState, int brtState, int brtMdState) {
     digitalWrite(latchPin, HIGH);
 }
 
-void ShfitReg::chase(int num_sr, int dt) {
+void ShfitReg::chase(int num_sr, int dt, int pwrPin, int sPin, int pPin, 
+    int brtPin, int brtMdPin) {
     // each number represents a byte like 10000000, 01000000, etc
     int steps [] = {1, 2, 4, 8, 16, 32, 64, 128};
 
@@ -68,41 +70,69 @@ void ShfitReg::chase(int num_sr, int dt) {
 
     // set OE low to enable output
     //digitalWrite(oePin, LOW);
-    analogWrite(oePin, 210);
+    
      // outer loop - one run per shift register
     for (int sr = 0; sr < num_sr; sr++) {
         // inner loop - one run per LED
         for (int led = 0; led < num_led; led++) { 
             // set latch low to shift in bits
+            analogWrite(oePin, getBrtState(state(pwrPin), state(brtPin), state(brtMdPin)));
             digitalWrite(latchPin, LOW);
             // first shift register
             if (sr == 0) {
                 // shift num_sr - 1 (5 in this case) empty bytes into memory
                 for (int r = 0; r < num_sr - 1; r++) {
-                    shiftOut(serPin, clkPin, MSBFIRST, empty);  
+                    if (state(pPin) == false) {
+                        shiftOut(serPin, clkPin, MSBFIRST, empty);  
+                    } else {
+                        shiftOut(serPin, clkPin, LSBFIRST, empty);  
+                    }
+                    
                 }
                 
                 // after all empty bytes are loaded, shift in the byte containing one lit LED
-                shiftOut(serPin, clkPin, MSBFIRST, steps[led]);
+                if (state(pPin) == false) {
+                    shiftOut(serPin, clkPin, MSBFIRST, steps[led]);  
+                } else {
+                    shiftOut(serPin, clkPin, LSBFIRST, steps[led]);  
+                }
+                
+                // shiftOut(serPin, clkPin, MSBFIRST, steps[led]);
 
             } else { // all shift registers after the first
                 // first, shift in remaining empty bytes considering sr (loop iterator) and lit byte
                 for (int t = 0; t < num_sr - (sr + 1); t++) {
-                    shiftOut(serPin, clkPin, MSBFIRST, empty);  
+                    //shiftOut(serPin, clkPin, MSBFIRST, empty);  
+                    if (state(pPin) == false) {
+                        shiftOut(serPin, clkPin, MSBFIRST, empty);  
+                    } else {
+                        shiftOut(serPin, clkPin, LSBFIRST, empty);  
+                    }
                 }
 
                 // shift lit byte in
-                shiftOut(serPin, clkPin, MSBFIRST, steps[led]);
+                //shiftOut(serPin, clkPin, MSBFIRST, steps[led]);
               
+                if (state(pPin) == false) {
+                    shiftOut(serPin, clkPin, MSBFIRST, steps[led]);  
+                } else {
+                    shiftOut(serPin, clkPin, LSBFIRST, steps[led]);  
+                }
+
                 // shift in the rest of the empty bytes
                 for (int r = 0; r < sr; r++) {
-                    shiftOut(serPin, clkPin, MSBFIRST, empty);  
+                    //shiftOut(serPin, clkPin, MSBFIRST, empty);  
+                    if (state(pPin) == false) {
+                        shiftOut(serPin, clkPin, MSBFIRST, empty);  
+                    } else {
+                        shiftOut(serPin, clkPin, LSBFIRST, empty);  
+                    }
                 }       
             }
             // run latch high to write all bits (48 in this case) to output at once 
             digitalWrite(latchPin, HIGH);
             delay(dt);
-            dt = dt / 1.05;
+            // dt = dt / 1.05;
         }
     }
 

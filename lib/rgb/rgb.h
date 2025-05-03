@@ -2,12 +2,12 @@
 #define RGB_H
 
 class RGB {
-    private: 
-        int rPin;
+    //private:
+    public:
+    int rPin;
         int gPin;
         int bPin;
         int rgbPins[3] = {rPin, gPin, bPin};
-    public:
         RGB(int rPin, int gPin, int bPin);
         void init();
         void off();
