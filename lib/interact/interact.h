@@ -8,8 +8,8 @@
         
 
     public:
-        int pin;
-        SlideSwitch(int pin);
+        byte pin;
+        SlideSwitch(byte pin);
         void init();
         bool getState();
  };
@@ -18,8 +18,8 @@
     //private:
         
     public:
-        int pin;    
-        Pot(int pin);
+        byte pin;    
+        Pot(byte pin);
         int getInt();
         int getSpd();
         int getBrt();

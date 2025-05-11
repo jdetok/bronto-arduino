@@ -72,6 +72,12 @@ void RGB::on(int pwrState, int brtState, int brtMdState,  int rVal, int gVal, in
     }
 }
 
+void RGB::on1() {
+    digitalWrite(rPin, HIGH);
+        //digitalWrite(gPin, HIGH);
+        digitalWrite(bPin, HIGH);
+}
+
 void RGB::onSw(int rState, int gState, int bState, int brt) {
     if (rState == 1) {
         analogWrite(rPin, brt);

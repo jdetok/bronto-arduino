@@ -2,7 +2,7 @@
 #include "interact.h"
 
 // slideswitch methods
-SlideSwitch::SlideSwitch(int pin) {
+SlideSwitch::SlideSwitch(byte pin) {
     this->pin = pin;
     init();
 }
@@ -17,7 +17,7 @@ bool SlideSwitch::getState() {
 
 // pot methods
 // pot class constructor
-Pot::Pot(int pin) {
+Pot::Pot(byte pin) {
     this->pin = pin;
 }
 

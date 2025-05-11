@@ -1,20 +1,34 @@
 #ifndef SHIFTREG_H
 #define SHIFTREG_H
 
-
 class ShfitReg {
     public:
-        int serPin;
-        int oePin;
-        int latchPin;
-        int clkPin;
+        byte serPin;
+        byte oePin;
+        byte latchPin;
+        byte clkPin;
+        byte pwrPin;
+        byte brtPin;
+        byte intPin;
+        byte seqPin;
+        byte ptrnPin;
+        byte spdPin;
+        byte bPin;
         
-        ShfitReg(int serPin, int oePin, int latchPin, int clkPin);
-        int getBrtState(int pwrState, int brtState, int brtMdState);
+        ShfitReg(byte serPin, byte oePin, byte latchPin, byte clkPin, 
+                    byte pwrPin, byte brtPin, byte intPin, byte seqPin, byte ptrnPin, byte spdPin, byte bPin);
+        
+        void selector(int num_sr, int num_led);
+        void seq(int num_sr, int num_led);
+        void emptyByteIn(char dir); // dir = 'm' for MSBFIRST or 'l' for LSBFIRST
+        void bitsFirst(int num_sr, int sr, int led);
+        void bitsAfter(int numsr, int sr, int led);
+        void bitsFirstr(int num_sr, int sr, int led);
+        void bitsAfterr(int numsr, int sr, int led);
         void off();
-        void on(int pwrState, int brtState, int brtMdState);
-        void chase(int num_sr, int dt, int pwrPin, int sPin, int pPin, int brtPin, int brtMdPin);
-        // void chase(int num_sr, int dt, bool rev);
+        void on();
+        int getBrtState();
+        int seqSpd();
 };
 
 #endif

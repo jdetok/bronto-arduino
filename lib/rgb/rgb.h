@@ -15,6 +15,7 @@ class RGB {
         void grn();
         void blu();
         int setBrtDiv(int brtState, int brtMdState);
+        void on1();
         void on(int pwrState, int brtState, int brtMdState, int rVal, int gVal, int bVal);
         void onSw(int rState, int gState, int bState, int brt);
 };

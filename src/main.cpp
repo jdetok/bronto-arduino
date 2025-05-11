@@ -7,7 +7,6 @@
 #include "interact.h" // controls switches and pots
 #include "shiftreg.h"
 #include "rgb.h" // controls RGB LED
-#include "states.h"
 
 // construct switch object(s)
 SlideSwitch pwrSw(5); // power
@@ -16,8 +15,9 @@ SlideSwitch brtMdSw(2); // intensity
 
 // only A0 - A5 can be used as digital sadly
 // maybe run a jumper from A6-A5 and A7-A1
-SlideSwitch pSw(A5); // pattern - change from A6 to A5
-SlideSwitch sSw(A0); // sequence/solid - A7 to A0
+SlideSwitch seqSw(A0); // sequence/solid - A7 to A0
+SlideSwitch ptrnSw(A5); // pattern - change from A6 to A5
+
 
 // construct potentiometer object(s)
 Pot spdPot(A1); // LED sequence speed
@@ -26,10 +26,18 @@ Pot gPot(A3); // green level
 Pot bPot(A2); // blue level
 
 // construct shift register object
-ShfitReg shiftReg(4, 6, 7, 8); // D4-serPin, D6-oePin, D7-latchPin, D8-clkPin
+ShfitReg shiftReg(4, 6, 7, 8, // D4-serPin, D6-oePin, D7-latchPin, D8-clkPin
+                  pwrSw.pin, brtSw.pin, brtMdSw.pin, 
+                  seqSw.pin, ptrnSw.pin, spdPot.pin, bPot.pin); 
 
 // construct RGB object(s)
 RGB rgbEye(9, 10, 11);
+
+const int NUM_SR = 6;
+const int NUM_LED = 8;
+
+const int num_sr = 6;
+const int num_led = 8;
 
 void setup() {
   Serial.begin(9600);
@@ -37,16 +45,12 @@ void setup() {
 }
 
 void loop() {
-  Serial.println(state(pSw.pin));
-  //Serial.println(pSw.getState());
-  rgbEye.off();
-  // using intensity (brt mode) switch until figuring out sSw and pSw not working digital
-  if (sSw.getState() == 0) {
+
+  if (seqSw.getState() == 0) {
     rgbEye.on(pwrSw.getState(), brtSw.getState(), brtMdSw.getState(), 
-    rPot.getInt(), gPot.getInt(), bPot.getInt());
-    shiftReg.on(pwrSw.getState(), brtSw.getState(), brtMdSw.getState());
-  } else {
-    // shiftReg.chase(6, spdPot.getSpd(), pSw.getState());
-    shiftReg.chase(6, spdPot.getSpd(), pwrSw.pin, sSw.pin, pSw.pin, brtSw.pin, brtMdSw.pin);
+      rPot.getInt(), gPot.getInt(), bPot.getInt());
   }
+  
+  shiftReg.selector(num_sr, num_led);  
+
 }
