@@ -57,15 +57,15 @@ void ShfitReg::seq(int num_sr, int num_led) {
                     bitsAfter(num_sr, sr, led);
                 }
             } else {
-                if (analogRead(bPin) > 600) {
+                //if (analogRead(bPin) > 0) {
                     shiftOut(serPin, clkPin, MSBFIRST, steps[led]);
-                } else {
-                    if (sr == num_sr-1) {
-                        bitsFirstr(num_sr, sr, led); 
-                    } else {
-                        bitsAfterr(num_sr, sr, led);
-                    }
-                }                
+                // } else {
+                //     if (sr == num_sr-1) {
+                //         bitsFirstr(num_sr, sr, led); 
+                //     } else {
+                //         bitsAfterr(num_sr, sr, led);
+                //     }
+                // }                
             }
             analogWrite(oePin, getBrtState());
             digitalWrite(latchPin, HIGH);

@@ -46,10 +46,12 @@ void setup() {
 
 void loop() {
 
-  if (seqSw.getState() == 0) {
-    rgbEye.on(pwrSw.getState(), brtSw.getState(), brtMdSw.getState(), 
-      rPot.getInt(), gPot.getInt(), bPot.getInt());
-  }
+  // if (seqSw.getState() == 0) {
+  //   rgbEye.on(pwrSw.getState(), brtSw.getState(), brtMdSw.getState(), 
+  //     rPot.getInt(), gPot.getInt(), bPot.getInt());
+  // } else {
+  //   rgbEye.off();
+  // }
   
   shiftReg.selector(num_sr, num_led);  
 
