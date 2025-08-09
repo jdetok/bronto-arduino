@@ -3,13 +3,24 @@
 #include "interact.h"
 #include "rgb.h"
 
-// steps for sequence
-int steps [] = {1, 2, 4, 8, 16, 32, 64, 128};
-int stepr [] = {128, 64, 32, 16, 8, 4, 2, 1};
+// STEPS for sequence
+const int STEPS [] = {1, 2, 4, 8, 16, 32, 64, 128};
+const int STEPR [] = {128, 64, 32, 16, 8, 4, 2, 1};
+const uint8_t EMPTY = 0x00;
 
-ShfitReg::ShfitReg(byte serPin, byte oePin, byte latchPin, byte clkPin, 
-    byte pwrPin, byte brtPin, byte intPin, byte seqPin, byte ptrnPin, byte spdPin, byte bPin) {
-    
+ShfitReg::ShfitReg(
+    uint8_t serPin, // serial pin
+    uint8_t oePin,  // oe pin
+    uint8_t latchPin, // latch pin
+    uint8_t clkPin,  // clock pin
+    uint8_t pwrPin, // power switch
+    uint8_t brtPin, // brightness switch
+    uint8_t intPin, // intensity switch
+    uint8_t seqPin, // sequence selector switch
+    uint8_t ptrnPin, // pattern selector switch
+    uint8_t spdPin, // speed pod
+    uint8_t bPin // 
+) {    
     this->serPin = serPin;
     this->oePin = oePin;
     this->latchPin = latchPin;
@@ -57,15 +68,7 @@ void ShfitReg::seq(int num_sr, int num_led) {
                     bitsAfter(num_sr, sr, led);
                 }
             } else {
-                //if (analogRead(bPin) > 0) {
-                    shiftOut(serPin, clkPin, MSBFIRST, steps[led]);
-                // } else {
-                //     if (sr == num_sr-1) {
-                //         bitsFirstr(num_sr, sr, led); 
-                //     } else {
-                //         bitsAfterr(num_sr, sr, led);
-                //     }
-                // }                
+                shiftOut(serPin, clkPin, MSBFIRST, STEPS[led]);             
             }
             analogWrite(oePin, getBrtState());
             digitalWrite(latchPin, HIGH);
@@ -73,56 +76,50 @@ void ShfitReg::seq(int num_sr, int num_led) {
     }
 }
 
-// send in an empty byte
-void ShfitReg::emptyByteIn(char dir = 'm') {
-    byte empty = 0x00;
-    
-    if (dir == 'm') {
-        shiftOut(serPin, clkPin, MSBFIRST, empty);
-    } else if (dir == 'l') {
-        shiftOut(serPin, clkPin, LSBFIRST, empty);
-    }
+// send in an empty uint8_t
+void ShfitReg::emptyByteIn() {
+    shiftOut(serPin, clkPin, MSBFIRST, EMPTY);
 }
 
 // one led at a time
 void ShfitReg::bitsFirst(int num_sr, int sr, int led) {
     for (int r = 0; r < num_sr - 1; r++) {
-        emptyByteIn('m'); 
+        emptyByteIn(); 
     }
-    shiftOut(serPin, clkPin, MSBFIRST, steps[led]); 
+    shiftOut(serPin, clkPin, MSBFIRST, STEPS[led]); 
 }
 
 void ShfitReg::bitsAfter(int num_sr, int sr, int led) {
     for (int r = 0; r < num_sr - (sr + 1); r++) {
-        emptyByteIn('m');
+        emptyByteIn();
     }
     
-    shiftOut(serPin, clkPin, MSBFIRST, steps[led]);
+    shiftOut(serPin, clkPin, MSBFIRST, STEPS[led]);
     
     for (int r = 0; r < sr; r++) {  
-        emptyByteIn('m');
+        emptyByteIn();
     }    
 }
 
 // reverse one led at a time
 void ShfitReg::bitsFirstr(int num_sr, int sr, int led) {
     for (int r = 0; r < num_sr - 1; r++) {
-        emptyByteIn('m'); 
+        emptyByteIn(); 
     }
 
     for (int r = 0; r < num_sr - (sr + 1); r++) {
-        emptyByteIn('m');
+        emptyByteIn();
     }
-    shiftOut(serPin, clkPin, MSBFIRST, stepr[led]); 
+    shiftOut(serPin, clkPin, MSBFIRST, STEPR[led]); 
 }
 void ShfitReg::bitsAfterr(int num_sr, int sr, int led) {
     for (int r = 0; r < sr; r++) {  
-        emptyByteIn('m');
+        emptyByteIn();
     }  
-    shiftOut(serPin, clkPin, MSBFIRST, stepr[led]);
+    shiftOut(serPin, clkPin, MSBFIRST, STEPR[led]);
 
     for (int r = 0; r < num_sr - (sr + 1); r++) {
-        emptyByteIn('m');
+        emptyByteIn();
     }
 }
 

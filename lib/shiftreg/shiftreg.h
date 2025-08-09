@@ -3,24 +3,34 @@
 
 class ShfitReg {
     public:
-        byte serPin;
-        byte oePin;
-        byte latchPin;
-        byte clkPin;
-        byte pwrPin;
-        byte brtPin;
-        byte intPin;
-        byte seqPin;
-        byte ptrnPin;
-        byte spdPin;
-        byte bPin;
+        uint8_t serPin;
+        uint8_t oePin;
+        uint8_t latchPin;
+        uint8_t clkPin;
+        uint8_t pwrPin;
+        uint8_t brtPin;
+        uint8_t intPin;
+        uint8_t seqPin;
+        uint8_t ptrnPin;
+        uint8_t spdPin;
+        uint8_t bPin;
         
-        ShfitReg(byte serPin, byte oePin, byte latchPin, byte clkPin, 
-                    byte pwrPin, byte brtPin, byte intPin, byte seqPin, byte ptrnPin, byte spdPin, byte bPin);
+        ShfitReg(
+            uint8_t serPin, 
+            uint8_t oePin, 
+            uint8_t latchPin, 
+            uint8_t clkPin, 
+            uint8_t pwrPin, 
+            uint8_t brtPin, 
+            uint8_t intPin, 
+            uint8_t seqPin, 
+            uint8_t ptrnPin, 
+            uint8_t spdPin, 
+            uint8_t bPin);
         
         void selector(int num_sr, int num_led);
         void seq(int num_sr, int num_led);
-        void emptyByteIn(char dir); // dir = 'm' for MSBFIRST or 'l' for LSBFIRST
+        void emptyByteIn(); // dir = 'm' for MSBFIRST or 'l' for LSBFIRST
         void bitsFirst(int num_sr, int sr, int led);
         void bitsAfter(int numsr, int sr, int led);
         void bitsFirstr(int num_sr, int sr, int led);

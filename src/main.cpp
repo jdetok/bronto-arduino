@@ -5,8 +5,12 @@
 
 #include <Arduino.h> // Arduino framework
 #include "interact.h" // controls switches and pots
-#include "shiftreg.h"
+#include "shiftreg.h" // main light display control
 #include "rgb.h" // controls RGB LED
+
+// six shift registers, 8 LEDs
+const int NUM_SR = 6;
+const int NUM_LED = 8;
 
 // construct switch object(s)
 SlideSwitch pwrSw(5); // power
@@ -17,7 +21,6 @@ SlideSwitch brtMdSw(2); // intensity
 // maybe run a jumper from A6-A5 and A7-A1
 SlideSwitch seqSw(A0); // sequence/solid - A7 to A0
 SlideSwitch ptrnSw(A5); // pattern - change from A6 to A5
-
 
 // construct potentiometer object(s)
 Pot spdPot(A1); // LED sequence speed
@@ -33,26 +36,19 @@ ShfitReg shiftReg(4, 6, 7, 8, // D4-serPin, D6-oePin, D7-latchPin, D8-clkPin
 // construct RGB object(s)
 RGB rgbEye(9, 10, 11);
 
-const int NUM_SR = 6;
-const int NUM_LED = 8;
-
-const int num_sr = 6;
-const int num_led = 8;
-
 void setup() {
   Serial.begin(9600);
-  Serial.println("setup");
 }
 
 void loop() {
-
-  // if (seqSw.getState() == 0) {
-  //   rgbEye.on(pwrSw.getState(), brtSw.getState(), brtMdSw.getState(), 
-  //     rPot.getInt(), gPot.getInt(), bPot.getInt());
-  // } else {
-  //   rgbEye.off();
-  // }
+  // control rgb
+  if (seqSw.getState() == 0) {
+    rgbEye.on(pwrSw.getState(), brtSw.getState(), brtMdSw.getState(), 
+      rPot.getInt(), gPot.getInt(), bPot.getInt());
+  } else {
+    rgbEye.off();
+  }
   
-  shiftReg.selector(num_sr, num_led);  
-
+  // control shift register leds
+  shiftReg.selector(NUM_SR, NUM_LED);  
 }

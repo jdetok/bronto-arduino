@@ -4,12 +4,9 @@
 // define functions for interacting with switches/pots
 
  class SlideSwitch {
-//    private:
-        
-
     public:
-        byte pin;
-        SlideSwitch(byte pin);
+        uint8_t pin;
+        SlideSwitch(uint8_t pin);
         void init();
         bool getState();
  };
